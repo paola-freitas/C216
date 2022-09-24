@@ -71,40 +71,29 @@ class CursoControllerTest {
 		Curso cursoValido = new Curso();
 		cursoValido.setDescricao("Descricao teste");
 		cursoValido.setCargaHoraria(100);
-		Curso cursoRespondido = webTestClient.post()
+		webTestClient.put()
+			.uri("/curso")
 			.bodyValue(cursoValido)
 			.exchange()
-			.expectStatus().isAccepted()
-			.expectBody(Curso.class)
-				.returnResult()
-				.getResponseBody();
-		assertNotNull(cursoValido);
-		assertNotNull(cursoValido.getId());
+			.expectStatus().isAccepted();
 	}
 	
 	@Test
 	void dadoCursoIdValido_quandoDeleteCursoPeloId_entaoRespondeComCursoValido() {
 		Long cursoIdValido = 1L;
-		Curso cursoRespondido = webTestClient.get()
-				.uri("/curso/" + cursoIdValido)
-				.exchange()
-				.expectStatus().isNoContent()
-				.expectBody(Curso.class)
-					.returnResult()
-					.getResponseBody();
-		assertNotNull(cursoRespondido);
-		assertEquals(cursoRespondido.getId(), cursoIdValido);
+		webTestClient.delete()
+			.uri("/curso/" + cursoIdValido)
+			.exchange()
+			.expectStatus().isNoContent();
 	}
 	
 	@Test
 	void dadoCursoIdInvalido_quandoDeleteCursoPeloId_entaoRespondeComStatusNotFound() {
-		Long cursoIdInvalido = 99L;
-		webTestClient.get()
+		Long cursoIdInvalido = null;
+		webTestClient.delete()
 			.uri("/curso/" + cursoIdInvalido)
 			.exchange()
 			.expectStatus().isNotFound();
 	}
 	
-	
-
 }
