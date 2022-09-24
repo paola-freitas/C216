@@ -80,11 +80,12 @@ class CursoControllerTest {
 	
 	@Test
 	void dadoCursoIdValido_quandoDeleteCursoPeloId_entaoRespondeComCursoValido() {
-		Long cursoIdValido = 1L;
+		Long cursoIdValido = 2L; //utilizou-se 2L para não usar um teste que vá influenciar em outro teste
 		webTestClient.delete()
 			.uri("/curso/" + cursoIdValido)
 			.exchange()
-			.expectStatus().isNoContent();
+			.expectStatus().isNoContent()
+			.expectBody().isEmpty();
 	}
 	
 	@Test
